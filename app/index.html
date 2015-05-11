@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title></title>
+    <!-- build:css(.tmp) styles/layout.css -->
+    <link rel="stylesheet" type="text/css" href="styles/bootstrap.css" />
+
+    <link href="styles/roboto.css" rel="stylesheet">
+    <link href="styles/material-fullpalette.css" rel="stylesheet">
+    <link href="styles/ripples.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles/angular-material.css">
+    <link rel="stylesheet" type="text/css" href="styles/datepicker.css" />
+    <link rel="stylesheet" type="text/css" href="styles/zTreeStyle.css" />
+    <link rel="stylesheet" type="text/css" href="styles/layout.css" />
+    <!-- endbuild -->
+</head>
+<body>
+<div ng-controller="viewCtrl">
+    <div data-ui-view=""></div>
+</div>
+<script type="text/html" id="modal-template">
+    <div class="modal fade bs-example-modal-lg" id="{{=modal.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog {{= modal.cls || ''}}">
+            {{ include('modal-content-template') }}
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="modal-content-template">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title">{{=modal.title}}</h4>
+        </div>
+        <div class="modal-body">
+            {{==modal.body}}
+        </div>
+        <div class="modal-footer">
+            {{ for(var i=0; i< modal.buttons.length; i++ ) {
+            var v = modal.buttons[i];
+            }}
+            <button data-index="{{=i}}" type="button" class="modal-btn {{=v.class}} {{= v.btnClass || ''}}">{{=v.text}}</button>
+            {{ } }}
+
+        </div>
+    </div>
+</script>
+
+<!-- build:js(.tmp) scripts/index.js -->
+<script src="scripts/require.js"></script>
+<script src="scripts/index.js"></script>
+<!-- endbuild -->
+</body>
+</html>

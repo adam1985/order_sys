@@ -1,0 +1,1 @@
+define(["./indexService"],function(){});

@@ -1,4 +1,4 @@
-define(["./directiveMod", "component/template", "component/utility", "component/bootstrap-datepicker", "ztree"], function (directiveMod, template, utility) {
+define(["./directiveMod", "component/template", "component/utility", "component/bootstrap-datepicker"], function (directiveMod, template, utility) {
     return directiveMod
 
         .directive("datePicker", function(){
@@ -20,7 +20,7 @@ define(["./directiveMod", "component/template", "component/utility", "component/
             }
         })
 
-        .directive("saveModal", function(){
+        .directive("newOrder", function(){
             return {
                 restrict: "AE",
                 //require: "^ngController",
@@ -28,11 +28,13 @@ define(["./directiveMod", "component/template", "component/utility", "component/
                     $scope.modalCof = {
                         id : 'global-modal',
                         title: '提示',
+                        cls: 'modal-lg',
                         body : template.render('create-group-template',{})
                     };
                 }],
-                template: '<a href="javascript:void(null)" class="btn btn-primary">保存</a>',
+                template: '<a href="javascript:void(null)" class="btn btn-primary" ng-transclude></a>',
                 replace: true,
+                transclude: true,
                 controllerAs: "saveModelController",
                 link: function($scope, $element, $attrs, saveModelController){
                     $element.on('click', function(){
@@ -44,26 +46,6 @@ define(["./directiveMod", "component/template", "component/utility", "component/
             }
         })
 
-        .directive("ztree", function(){
-            return {
-                restrict: "AE",
-                controller: ["$scope", "serviceData", function($scope, serviceData){
-                    $scope.ztree = serviceData.ztree;
-                }],
-                controllerAs: "ztreeCtrl",
-                link: function($scope, $element, $attrs, ztreeCtrl){
-
-                    var setting = {
-                        data: {
-                            simpleData: {
-                                enable: true
-                            }
-                        }
-                    };
-                    $.fn.zTree.init($element, setting, $scope.ztree);
-                }
-            }
-        });
 });
 
 

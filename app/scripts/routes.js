@@ -1,17 +1,17 @@
 define(["./app"], function (app) {
     return app
         .config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $urlRouterProvider){
-            $urlRouterProvider.when("", "/manage");
+            $urlRouterProvider.when("", "/order/index");
             $stateProvider
                 .state("manage", {
-                    url: "/manage",
-                    templateUrl: "tpl/order_manage.html",
+                    url: "/order/manage",
+                    templateUrl: "tpl/order/manage.html",
                     controller: "orderManage"
                 })
                 .state("edit", {
-                    url:"/edit",
-                    templateUrl: "tpl/edit_order.html",
-                    controller: "orderEdit"
+                    url:"/order/index",
+                    templateUrl: "tpl/order/index.html",
+                    controller: "orderIndex"
                 })
         }]);
 });

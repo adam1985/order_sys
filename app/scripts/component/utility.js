@@ -15,7 +15,7 @@ define(['jquery', './template', 'interface/ajax'], function ($, template, ajax) 
             this.cb = config.cb || $.noop;
             this.options = config.options || {};
             var buttons = [
-                    { type : 'ok', class: 'btn btn-success', btnClass: 'btn-ok', text : '确定' },
+                    { type : 'ok', class: 'btn btn-primary', btnClass: 'btn-ok', text : '确定' },
                     { type : 'cancel', class: 'btn', text : '取消' }
             ];
 

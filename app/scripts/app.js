@@ -9,7 +9,7 @@ define(["angular", "controller/mainController", "directive/mainDirective", "serv
 
     }])
 
-    .controller("orderEdit", ["$scope", function($scope){
+    .controller("orderIndex", ["$scope", function($scope){
 
     }]);
 });

@@ -29,8 +29,8 @@ define(function(){
 
             'use strict';
             exports.version = '2.0.0';
-            exports.openTag = '{{';     // 设置逻辑语法开始标签
-            exports.closeTag = '}}';    // 设置逻辑语法结束标签
+            exports.openTag = '<#';     // 设置逻辑语法开始标签
+            exports.closeTag = '#>';    // 设置逻辑语法结束标签
             exports.isEscape = true;    // HTML字符编码输出开关
             exports.isCompress = false; // 剔除渲染后HTML多余的空白开关
             exports.parser = null;      // 自定义语法插件接口

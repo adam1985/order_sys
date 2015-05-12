@@ -9,8 +9,9 @@ define(['jquery', './template', 'interface/ajax'], function ($, template, ajax) 
     var utility_ = {};
 
     /** 模式窗口 */
-    var modal = function( templateId, config ){
+    var modal = function( templateId, config, scope ){
             this.templateId = templateId;
+            this.scope = scope;
             this.data = config.data || {};
             this.cb = config.cb || $.noop;
             this.options = config.options || {};
@@ -73,9 +74,15 @@ define(['jquery', './template', 'interface/ajax'], function ($, template, ajax) 
 
 
     modal.prototype.createModal = function(){
-        $(document.body).append(template.render( this.templateId, {
+        var modalTpl = template.render( this.templateId, {
             modal : this.data
-        }));
+        }), modalJq;
+        if(this.scope){
+            modalJq = this.scope.compile(modalTpl)(this.scope)
+        } else {
+            modalJq = $(modalTpl);
+        }
+        $(document.body).append(modalJq);
 
         var modal = $('#' + this.data.id);
         modal.modal( this.options );
@@ -135,13 +142,20 @@ define(['jquery', './template', 'interface/ajax'], function ($, template, ajax) 
 
     modal.prototype.update = function( config ){
         var self = this,
-            jqModal = self.jqModal;
+            jqModal = self.jqModal,
+            dialogJq,
+            modalTpl = template.render( 'modal-content-template', {
+                modal : this.data
+            });
             self.cb = config.cb || $.noop;
             self.data = config.data || {};
             this.buttons = this.disposeButtons(this.buttons, config.buttons);
-            jqModal.find('.modal-dialog').html(template.render( 'modal-content-template', {
-                modal : this.data
-            }));
+            if(this.scope){
+                dialogJq = this.scope.compile(modalTpl)(this.scope)
+            } else {
+                dialogJq = $(modalTpl);
+            }
+            jqModal.find('.modal-dialog').html(dialogJq);
             this.addEvent();
             self.show();
 
@@ -149,7 +163,7 @@ define(['jquery', './template', 'interface/ajax'], function ($, template, ajax) 
     };
 
     var modalState = {};
-    utility_.modal = function( templateId, config ){
+    utility_.modal = function( templateId, config, scope ){
         
         config.data = config.data || {};
         config.data = $.extend({
@@ -161,7 +175,7 @@ define(['jquery', './template', 'interface/ajax'], function ($, template, ajax) 
         if( modalState[cacheId] ) {
             _modal.update( config );
         } else {
-            modalState[cacheId] = _modal = new modal(templateId, config);
+            modalState[cacheId] = _modal = new modal(templateId, config, scope);
         }
 
         return _modal;

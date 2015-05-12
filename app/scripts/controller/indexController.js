@@ -1,10 +1,10 @@
 define(["./controllerMod"], function (controllerMod) {
     return controllerMod
-        .controller("viewCtrl", ["$scope","serviceData", function($scope, serviceData){
+        .controller("viewCtrl", ["$scope",function($scope){
 
         }])
 
-        .controller("orderFormCtrl", ["$scope", function($scope){
+        .controller("orderFormCtrl", ["$scope", "remoteResource", function($scope, remoteResource){
             $scope.statusList = [
                 {
                     id: 1,
@@ -23,6 +23,20 @@ define(["./controllerMod"], function (controllerMod) {
                     name: "停止"
                 }
             ];
+
+            remoteResource.getOrderList({
+                page: 1,
+                rows: 5
+            }).success(function(res){
+                if(res.success){
+                    var data = res.data,
+                        page = data.page,
+                        total = data.total;
+                        $scope.order_list = data.rows;
+                }
+            });
+
+
         }]);
 });
 

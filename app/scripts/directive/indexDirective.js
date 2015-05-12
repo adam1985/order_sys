@@ -24,12 +24,14 @@ define(["./directiveMod", "component/template", "component/utility", "component/
             return {
                 restrict: "AE",
                 //require: "^ngController",
-                controller : ["$scope", "$element", "$attrs", "$transclude", function($scope, $element,$attrs){
+                controller : ["$scope", "$element", "$attrs", "$compile", function($scope, $element,$attrs, $compile){
+
+                    $scope.compile = $compile;
                     $scope.modalCof = {
                         id : 'global-modal',
                         title: '提示',
                         cls: 'modal-lg',
-                        body : template.render('create-group-template',{})
+                        body : template.render('create-group-template')
                     };
                 }],
                 template: '<a href="javascript:void(null)" class="btn btn-primary" ng-transclude></a>',
@@ -40,8 +42,9 @@ define(["./directiveMod", "component/template", "component/utility", "component/
                     $element.on('click', function(){
                         utility.modal( 'modal-template', {
                             data : $scope.modalCof
-                        });
+                        }, $scope);
                     });
+
                 }
             }
         })

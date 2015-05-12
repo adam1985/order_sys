@@ -400,9 +400,10 @@ define(['jquery'], function(jQuery) {
                     windowWidth = $window.width(),
                     windowHeight = $window.height();
 
-                var zIndex = parseInt(this.element.parents().filter(function () {
+/*                var zIndex = parseInt(this.element.parents().filter(function () {
                     return $(this).css('z-index') != 'auto';
-                }).first().css('z-index')) + 10;
+                }).first().css('z-index')) + 10;*/
+                var zIndex = 3000;
                 var offset = this.component ? this.component.parent().offset() : this.element.offset();
                 var height = this.component ? this.component.outerHeight(true) : this.element.outerHeight(true);
                 var width = this.component ? this.component.outerWidth(true) : this.element.outerWidth(true);

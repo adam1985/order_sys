@@ -5,11 +5,11 @@ define(["angular", "controller/mainController", "directive/mainDirective", "serv
         'webapp.directive',
         'webapp.service'
     ])
-    .controller("orderManage", ["$scope", function($scope){
-
+    .controller("orderManage", ["$scope","$templateCache", function($scope, $templateCache){
+            $templateCache.removeAll();
     }])
 
-    .controller("orderIndex", ["$scope", function($scope){
-
+    .controller("orderIndex", ["$scope","$templateCache", function($scope, $templateCache){
+           $templateCache.removeAll();
     }]);
 });

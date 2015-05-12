@@ -8,10 +8,13 @@ define(["./app"], function (app) {
                     templateUrl: "tpl/order/manage.html",
                     controller: "orderManage"
                 })
-                .state("edit", {
+                .state("index", {
                     url:"/order/index",
                     templateUrl: "tpl/order/index.html",
-                    controller: "orderIndex"
+                    controller: "orderIndex",
+                    resolve: {
+
+                    }
                 })
         }]);
 });

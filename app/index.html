@@ -5,7 +5,6 @@
     <title></title>
     <!-- build:css(.tmp) styles/layout.css -->
     <link rel="stylesheet" type="text/css" href="styles/bootstrap.css" />
-
     <link href="styles/roboto.css" rel="stylesheet">
     <link href="styles/material-fullpalette.css" rel="stylesheet">
     <link href="styles/ripples.css" rel="stylesheet">
@@ -39,11 +38,17 @@
             <#==modal.body#>
         </div>
         <div class="modal-footer">
-            <# for(var i=0; i< modal.buttons.length; i++ ) {
-            var v = modal.buttons[i];
-            #>
-            <button data-index="<#=i#>" type="button" class="modal-btn <#=v.class#> <#= v.btnClass || ''#>"><#=v.text#></button>
-            <# } #>
+            <div class="col-lg-8">
+
+            </div>
+            <div class="col-lg-4">
+                <# for(var i=0; i< modal.buttons.length; i++ ) {
+                var v = modal.buttons[i];
+                #>
+                <button data-index="<#=i#>" type="button" class="modal-btn <#=v.class#> <#= v.btnClass || ''#>"><#=v.text#></button>
+                <# } #>
+            </div>
+
         </div>
     </div>
 </script>

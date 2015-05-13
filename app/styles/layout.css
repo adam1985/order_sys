@@ -13,3 +13,8 @@
 .order-status-list md-checkbox{margin:2px 8px 8px;}
 .modal-content .modal-body{padding: 15px;}
 .modal-content label{font-weight: normal;}
+.order-list-grid .table td,.order-list-grid .table th{vertical-align: middle;}
+.order-list-grid .btn-sm{
+    margin: 0;}
+
+.pagination a,.pointer-cursor{cursor: pointer;}

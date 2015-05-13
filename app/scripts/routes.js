@@ -1,6 +1,7 @@
 define(["./app"], function (app) {
     return app
-        .config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $urlRouterProvider){
+        .config([ "$stateProvider", "$urlRouterProvider", function ($stateProvider, $urlRouterProvider){
+
             $urlRouterProvider.when("", "/order/index");
             $stateProvider
                 .state("manage", {
@@ -11,12 +12,9 @@ define(["./app"], function (app) {
                 .state("index", {
                     url:"/order/index",
                     templateUrl: "tpl/order/index.html",
-                    controller: "orderIndex",
-                    resolve: {
-
-                    }
+                    controller: "orderIndex"
                 })
-        }]);
+        }])
 });
 
 

@@ -4,7 +4,8 @@ define(["./controllerMod"], function (controllerMod) {
 
         }])
 
-        .controller("orderFormCtrl", ["$scope", "remoteResource", function($scope, remoteResource){
+        .controller("orderOperateCtrl", ["$scope", "orderResource", function($scope, orderResource){
+
             $scope.statusList = [
                 {
                     id: 1,
@@ -24,18 +25,23 @@ define(["./controllerMod"], function (controllerMod) {
                 }
             ];
 
-            remoteResource.getOrderList({
+            $scope.rows = 5;
+
+            $scope.orderResourcePromise = orderResource.readAll({
                 page: 1,
-                rows: 5
-            }).success(function(res){
+                rows: $scope.rows
+            }).$promise.then(function(res){
                 if(res.success){
                     var data = res.data,
-                        page = data.page,
-                        total = data.total;
+                        page = +data.page,
+                        total = +data.totle,
+                        totalPages = Math.ceil( total / $scope.rows );
+
                         $scope.order_list = data.rows;
+                        $scope.totalPages = totalPages;
+                        $scope.page = page;
                 }
             });
-
 
         }]);
 });

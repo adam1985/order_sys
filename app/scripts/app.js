@@ -1,9 +1,9 @@
-define(["angular", "controller/mainController", "directive/mainDirective", "service/mainService"], function (angular) {
+define(["angular-material", "directive/mainDirective", "service/mainService", "controller/mainController"], function (angular) {
     return angular.module('webapp', [
         'ui.router',
-        'webapp.controller',
+        'webapp.service',
         'webapp.directive',
-        'webapp.service'
+        'webapp.controller'
     ])
     .controller("orderManage", ["$scope","$templateCache", function($scope, $templateCache){
             $templateCache.removeAll();

@@ -8,7 +8,9 @@ require.config({
         "angular-ui-router": "angular/angular-ui-router",
         "angular-animate": "angular/angular-animate",
         "angular-aria": "angular/angular-aria",
+        "angular-resource": "angular/angular-resource",
         "angular-material": "angular/angular-material",
+        "restangular": "angular/restangular",
         "bootstrap-material": "bootstrap-material-design/material",
         "bootstrap-ripples": "bootstrap-material-design/ripples",
         "ztree": "component/jquery.ztree.all-3.5",
@@ -29,10 +31,13 @@ require.config({
         },
         "angular-animate": ["angular"],
         "angular-aria": ["angular"],
+        "restangular": ["angular"],
+        "angular-resource": ["angular"],
         "angular-material":  {
             "deps": ["angular", "angular-animate", "angular-aria"],
             "exports": 'angular'
         },
+
         "bootstrap": ["jquery"],
         "angular-route": ["angular"],
         "angular-ui-router": ["angular"],

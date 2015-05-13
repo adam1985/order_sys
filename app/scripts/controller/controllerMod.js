@@ -1,4 +1,4 @@
-define(['angular-material'], function (angular) {
+define(['angular-material', 'angular-resource'], function (angular) {
     'use strict';
-    return angular.module('webapp.controller', ['ngMaterial']);
+    return angular.module('webapp.controller', ['ngMaterial', "ngResource"]);
 });

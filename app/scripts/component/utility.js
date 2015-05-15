@@ -1,5 +1,5 @@
 
-define(['jquery', './template', 'interface/ajax'], function ($, template, ajax) {
+define(['jquery', './template', 'interface/ajax', 'validform'], function ($, template, ajax) {
 
     /**
      * 使用严格模式
@@ -124,12 +124,9 @@ define(['jquery', './template', 'interface/ajax'], function ($, template, ajax) 
                 cb = self.buttons[index].cb || self.cb;
             }
 
-            if( !cb.keeplive ){
-                self.hide(function(){
-                    cb(self, self.jqModal);
-                });
-            } else {
-                cb(self, self.jqModal);
+
+            if(  !cb(self, self.jqModal) ){
+                self.hide();
             }
             
             
@@ -210,6 +207,22 @@ define(['jquery', './template', 'interface/ajax'], function ($, template, ajax) 
                     }
                 }
             });
+    };
+
+    /** 验证表单 */
+    utility_.isCheckValid = function( form ){
+        return $(form).Validform({
+            tipSweep: false,
+            tiptype:function(msg,o,cssctl){
+                var objtip=$("#err-tiper");
+                if(o.type != 2 ) {
+                    cssctl(objtip,o.type);
+                    objtip.show().text(msg);
+                } else {
+                    objtip.hide();
+                }
+            }
+        }).check(false);
     };
 
 

@@ -1,1 +1,1 @@
-define(["./indexService"],function(){});
+define(["./orderService"],function(){});

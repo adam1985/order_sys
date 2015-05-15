@@ -18,3 +18,7 @@
     margin: 0;}
 
 .pagination a,.pointer-cursor{cursor: pointer;}
+.modal-footer .err-tiper{text-align: left; margin:11px 0;}
+em.required{color: #f00; vertical-align: middle; margin-left: 2px;}
+.chosen-container-multi .chosen-choices{ border: none;border-bottom: 1px solid #d2d2d2;}
+.chosen-container-active .chosen-choices{box-shadow: none;}

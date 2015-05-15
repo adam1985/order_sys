@@ -1,1 +1,1 @@
-define(["./indexController"],function(){});
+define(["./orderController"],function(){});

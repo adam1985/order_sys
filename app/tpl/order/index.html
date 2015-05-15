@@ -7,34 +7,33 @@
             <div class="row">
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label for="order-name" class="col-sm-4 control-label">订单名称</label>
-
+                        <label for="order-filter-name" class="col-sm-4 control-label">订单名称</label>
                         <div class="col-sm-8">
-                            <input placeholder="请输入要查询的订单名称" type="text" class="form-control" id="order-name"
-                                   ng-model="order.name">
+                            <input placeholder="请输入要查询的订单名称" type="text" class="form-control" id="order-filter-name"
+                                   ng-model="order_filter.order_name">
                         </div>
                     </div>
                 </div>
 
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label for="crm" class="col-sm-4 control-label">CRM订单号</label>
+                        <label for="order-filter-crm" class="col-sm-4 control-label">CRM订单号</label>
 
                         <div class="col-sm-8">
-                            <input placeholder="输入CRM订单号" type="text" class="form-control" id="crm"
-                                   ng-model="order.crm">
+                            <input placeholder="输入CRM订单号" type="text" class="form-control" id="order-filter-crm"
+                                   ng-model="order_filter.crm_order_id">
                         </div>
                     </div>
                 </div>
 
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label for="start-time" class="col-sm-4 control-label">订单开始日期</label>
+                        <label for="order-filter-start-date" class="col-sm-4 control-label">订单开始日期</label>
 
                         <div class="col-sm-8">
                             <div class="input-group">
                                 <input readonly="" placeholder="输入订单开始日期" data-date-picker type="text"
-                                       class="form-control" id="start-time" ng-model="order.ts"/>
+                                       class="form-control" id="order-filter-start-date" ng-model="order_filter.start_date"/>
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                             </div>
                         </div>
@@ -46,53 +45,52 @@
 
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label for="orderid" class="col-sm-4 control-label">订单编号</label>
+                        <label for="order-filter-orderid" class="col-sm-4 control-label">订单编号</label>
 
                         <div class="col-sm-8">
-                            <input placeholder="请输入编号" type="text" class="form-control" id="orderid"
-                                   ng-model="order.id"/>
+                            <input placeholder="请输入编号" type="text" class="form-control" id="order-filter-orderid"
+                                   ng-model="order_filter.id"/>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label for="doae" class="col-sm-4 control-label">执行AE</label>
+                        <label for="order-filter-execute-ae" class="col-sm-4 control-label">执行AE</label>
 
                         <div class="col-sm-8">
-                            <input placeholder="输入名字" type="text" class="form-control" id="doae"
-                                   ng-model="order.ae">
+                            <input placeholder="输入名字" type="text" class="form-control" id="order-filter-execute-ae"
+                                   ng-model="order_filter.execute_ae">
                         </div>
                     </div>
                 </div>
 
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label for="end-time" class="col-sm-4 control-label">订单结束日期</label>
+                        <label for="order-filter-end-date" class="col-sm-4 control-label">订单结束日期</label>
 
                         <div class="col-sm-8">
                             <div class="input-group">
                                 <input readonly="" placeholder="输入订单结束日期" data-date-picker type="text"
-                                       class="form-control" id="end-time" ng-model="order.te"/>
+                                       class="form-control" id="order-filter-end-date" ng-model="order_filter.end_date"/>
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
             </div>
             <div class="row">
 
 
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label for="ader" class="col-sm-4 control-label">广告主</label>
+                        <label class="col-sm-4 control-label">广告主</label>
 
                         <div class="col-sm-8">
-                            <input placeholder="点击选择广告主" type="text" class="form-control" id="ader"
-                                   ng-model="order.ader">
+                            <ader-group  multiple="multiple" data-placeholder="点击选择广告主" ng-model="order_filter.advertiser">
+                            </ader-group>
                         </div>
+
                     </div>
                 </div>
 
@@ -103,10 +101,9 @@
                         <div class="col-sm-10 order-status-list">
 
                             <span class="col-sm-3" ng-repeat="item in statusList">
-                                 <md-checkbox ng-model="data.kb1" class="md-primary">
+                                 <md-checkbox ng-model="order_filter.ckb" class="md-primary">
                                      {{item.name}}
                                  </md-checkbox>
-
                             </span>
 
                         </div>
@@ -120,7 +117,7 @@
 
                         <div class="col-sm-8">
                             <a href="javascript:void(null)" class="btn btn-primary">查询</a>
-                            <new-order>新建订单</new-order>
+                            <new-order class="btn btn-primary">新建订单</new-order>
                         </div>
                     </div>
                 </div>
@@ -151,7 +148,11 @@
                         <td>{{item.start_date}}</td>
                         <td>{{item.end_date}}</td>
                         <td>{{item.order_status}}</td>
-                        <td><a href="###" class="btn btn-primary btn-sm">展开</a>　<a href="###" class="btn btn-primary btn-sm">编辑</a> <a href="###" class="btn btn-primary btn-sm">删除</a> </td>
+                        <td>
+                          <a href="javascript:void(null)" class="btn btn-primary btn-sm">展开</a>
+                          <new-order class="btn btn-primary btn-sm" orderid="{{item.id}}">编辑</new-order>
+                          <a href="javascript:void(null)" ng-click="removeOrder(item.id)" class="btn btn-primary btn-sm">删除</a>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
@@ -165,15 +166,37 @@
 
 
 <script type="text/html" id="new-order-template">
-    <form class="form-horizontal" name="newOrderForm">
+    <form class="form-horizontal" name="newOrderForm" id="newOrderForm">
         <fieldset>
+            <div class="row" ng-hide="orderAction.isCreate">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="order-id" class="col-sm-4 control-label">订单id</label>
+                        <div class="col-sm-8">
+                            <input ng-disabled="orderAction.isCreate" readonly="" placeholder="系统自动生成" type="text" class="form-control" id="order-id" ng-model="order.id">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input  ng-disabled="orderAction.isCreate" readonly="" type="hidden" ng-model="order.hidden_end_date" />
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group">
-                        <label for="new-id" class="col-sm-4 control-label">订单id</label>
+                        <label for="order-name" class="col-sm-4 control-label">订单名称<em class="required">*</em></label>
 
                         <div class="col-sm-8">
-                            <input disabled="" placeholder="系统自动生成" type="text" class="form-control" id="new-id" ng-model="new.id">
+                            <input datatype="*" nullmsg="请输入必填项" placeholder="请输入订单名称" type="text" class="form-control" id="order-name"
+                                   ng-model="order.order_name">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="order-crm" class="col-sm-4 control-label">CRM订单<em class="required">*</em></label>
+
+                        <div class="col-sm-8">
+                            <input datatype="*" nullmsg="请输入必填项" placeholder="输入CRM订单号" type="text" class="form-control" id="order-crm"
+                                   ng-model="order.crm_order_id">
                         </div>
                     </div>
                 </div>
@@ -181,41 +204,19 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group">
-                        <label for="new-name" class="col-sm-4 control-label">订单名称</label>
-
+                        <label for="order-doae" class="col-sm-4 control-label">执行AE<em class="required">*</em></label>
                         <div class="col-sm-8">
-                            <input placeholder="请输入订单名称" type="text" class="form-control" id="new-name"
-                                   ng-model="new.name">
+                            <input datatype="*" nullmsg="请输入必填项" placeholder="输入名字" type="text" class="form-control" id="order-doae" ng-model="order.execute_ae">
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group">
-                        <label for="new-crm" class="col-sm-4 control-label">CRM订单</label>
+                        <label class="col-sm-4 control-label">广告主<em class="required">*</em></label>
 
                         <div class="col-sm-8">
-                            <input placeholder="输入CRM订单号" type="text" class="form-control" id="new-crm"
-                                   ng-model="new.crm">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label for="new-doae" class="col-sm-4 control-label">执行AE</label>
-                        <div class="col-sm-8">
-                            <input placeholder="输入名字" type="text" class="form-control" id="new-doae" ng-model="new.ae">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label for="new-ader" class="col-sm-4 control-label">广告主</label>
-
-                        <div class="col-sm-8">
-                            <input placeholder="点击选择广告主" type="text" class="form-control" id="new-ader"
-                                   ng-model="new.ader">
+                            <ader-group data-placeholder="点击选择广告主" ng-model="order.advertiser">
+                            </ader-group>
                         </div>
                     </div>
                 </div>
@@ -224,12 +225,12 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group">
-                        <label for="new-start-time" class="col-sm-4 control-label">订单开始日期</label>
+                        <label for="order-start-date" class="col-sm-4 control-label">订单开始日期<em class="required">*</em></label>
 
                         <div class="col-sm-8">
                             <div class="input-group">
-                                <input readonly="" placeholder="输入订单结束日期" data-date-picker type="text"
-                                       class="form-control" id="new-start-time" ng-model="new.ts"/>
+                                <input  datatype="*" nullmsg="请输入必填项" readonly="" placeholder="输入订单结束日期" data-date-picker type="text"
+                                       class="form-control" id="order-start-date" ng-model="order.start_date"/>
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                             </div>
                         </div>
@@ -237,12 +238,12 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group">
-                        <label for="new-end-time" class="col-sm-4 control-label">订单结束日期</label>
+                        <label for="order-end-date" class="col-sm-4 control-label">订单结束日期<em class="required">*</em></label>
 
                         <div class="col-sm-8">
                             <div class="input-group">
-                                <input readonly="" placeholder="输入订单结束日期" data-date-picker type="text"
-                                       class="form-control" id="new-end-time" ng-model="new.te"/>
+                                <input datatype="*" nullmsg="请输入必填项" readonly="" placeholder="输入订单结束日期" data-date-picker type="text"
+                                       class="form-control" id="order-end-date" ng-model="order.end_date"/>
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                             </div>
                         </div>

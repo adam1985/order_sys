@@ -17,7 +17,7 @@ require.config({
         "ext": "ext/ext-all",
         'ext-locale': 'ext/ext-locale-zh_CN',
         "My97DatePicker" : "component/My97DatePicker/WdatePicker",
-        "chosen" : "component/chosen/chosen.jquery",
+        "chosen" : "component/jquery.chosen",
         "validform" : "component/validform/js/Validform_v5.3.2",
         "datatables" : "component/datatables",
         "amcharts" : "component/amcharts/amcharts",

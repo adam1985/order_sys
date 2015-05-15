@@ -1,1 +1,1 @@
-define(["./indexDirective"],function(){});
+define(["./orderDirective"],function(){});

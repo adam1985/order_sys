@@ -1,1 +1,1 @@
-define(["./orderService"],function(){});
+define(["./orderService", "./utilityService"],function(){});

@@ -4,7 +4,7 @@ define(["./serviceMod"], function (serviceMod) {
         factory("orderResource", ["$resource",  function($resource){
             return  $resource('/order/list', {}, {
                 read: {method:'GET', url: '/order/getdetail'},
-                readAll: {method: 'GET'},
+                readAll: {method: 'POST'},
                 create: {
                     method: 'post',
                     url: '/order/add'

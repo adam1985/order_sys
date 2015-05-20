@@ -87,10 +87,9 @@
                         <label class="col-sm-4 control-label">广告主</label>
 
                         <div class="col-sm-8">
-                            <ader-group  multiple="multiple" data-placeholder="点击选择广告主" ng-model="order_filter.advertiser">
+                            <ader-group isrender="1" multiple="multiple" data-placeholder="点击选择广告主" ng-model="order_filter.advertiser">
                             </ader-group>
                         </div>
-
                     </div>
                 </div>
 
@@ -99,13 +98,13 @@
                         <label class="col-sm-2 control-label">订单状态</label>
 
                         <div class="col-sm-10 order-status-list">
+                            <span class="col-sm-3" ng-repeat="item in status">
 
-                            <span class="col-sm-3" ng-repeat="item in statusList">
-                                 <md-checkbox ng-model="order_filter.ckb" class="md-primary">
+                                 <md-checkbox ng-model="order_filter.order_status[$index]" ng-true-value="{{item.id}}" class="md-primary">
                                      {{item.name}}
                                  </md-checkbox>
-                            </span>
 
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -116,7 +115,7 @@
                         <label class="col-sm-4"></label>
 
                         <div class="col-sm-8">
-                            <a href="javascript:void(null)" class="btn btn-primary">查询</a>
+                            <a ng-click="searchOrder()" href="javascript:void(null)" class="btn btn-primary">查询</a>
                             <new-order class="btn btn-primary">新建订单</new-order>
                         </div>
                     </div>
@@ -178,6 +177,7 @@
                     </div>
                 </div>
             </div>
+            {{}}
             <input  ng-disabled="orderAction.isCreate" readonly="" type="hidden" ng-model="order.hidden_end_date" />
             <div class="row">
                 <div class="col-sm-6">
@@ -215,7 +215,7 @@
                         <label class="col-sm-4 control-label">广告主<em class="required">*</em></label>
 
                         <div class="col-sm-8">
-                            <ader-group data-placeholder="点击选择广告主" ng-model="order.advertiser">
+                            <ader-group id="order-ader" data-placeholder="点击选择广告主" ng-model="order.advertiser">
                             </ader-group>
                         </div>
                     </div>

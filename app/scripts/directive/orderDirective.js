@@ -25,10 +25,11 @@ define(["./directiveMod", "component/template", "component/utility", "chosen", "
                 return {
                     restrict: "AE",
                     //require: "^ngController",
-                    controller : ["$scope", "$element", "$attrs", "$compile", "$rootScope", function($scope, $element,$attrs, $compile, $rootScope){
+                    controller : ["$scope", "$element", "$attrs", "$compile", "$rootScope", "$q", function($scope, $element,$attrs, $compile, $rootScope, $q){
 
                         $scope.compile = $compile;
                         $scope.$rootScope = $rootScope;
+                        $scope.$q = $q;
                         $scope.modalCof = {
                             id : 'global-modal',
                             title: '提示',
@@ -43,35 +44,56 @@ define(["./directiveMod", "component/template", "component/utility", "chosen", "
                     scope: true,
                     link: function($scope, $element, $attrs, saveModelController){
                         $element.on('click', function(){
-
-                            var orderid = $attrs.orderid;
+                            var orderid = $attrs.orderid, readDefer;
 
                             if(orderid){
-                                $scope.readOrder(orderid, function(){
-
-                                });
+                                readDefer = $scope.readOrder(orderid);
                             } else {
-                                $scope.emptyOrder();
+                                readDefer = $scope.emptyOrder();
                             }
-
-                            $scope.$rootScope.$apply(function(){
-                                $scope.orderAction.isCreate = !orderid;
-                            });
 
 
                             utility.modal( 'modal-template', {
-                                data : $scope.modalCof,
-                                cb: function(){
-                                    var isCheckValid = utility.isCheckValid($('#newOrderForm'));
-                                    if(isCheckValid){
-                                        $scope.createOrder();
-                                    } else {
-                                        $('#err-tiper').show();
-                                    }
-                                    return !isCheckValid;
+                                    data : $scope.modalCof,
+                                    cb: function(){
+                                        var isCheckValid = utility.isCheckValid($('#newOrderForm'));
 
-                                }
-                            }, $scope);
+                                        if(isCheckValid){
+                                            var promise;
+                                            if($scope.orderAction.isCreate){
+                                                promise = $scope.createOrder();
+                                            } else {
+                                                promise = $scope.updateOrder();
+                                            }
+
+                                            promise.then(function(){
+                                                /*$scope.allOrder({
+                                                    page: 1,
+                                                    rows: $scope.rows
+                                                });*/
+                                                location.reload();
+                                            }, function(){
+                                                utility.modal( 'modal-template', {
+                                                    data : {
+                                                        id : 'alert-model',
+                                                        title : '提示',
+                                                        body : $scope.errMsg
+                                                    },
+                                                    buttons : [
+                                                        {"ty" : "remove", "type" : "cancel"}
+                                                    ]
+                                                });
+                                            });
+
+                                        } else {
+                                            $('#err-tiper').show();
+                                        }
+                                        return !isCheckValid;
+                                    }
+                                }, $scope);
+
+
+
                         });
 
                     }
@@ -138,30 +160,28 @@ define(["./directiveMod", "component/template", "component/utility", "chosen", "
             directive("aderGroup", function(){
                 return {
                     restrict: "AE",
-                    template: '<select class="hide" ng-options="option.name group by option.group for option in aderCroups"></select>',
+                    template: '<select class="hide" ng-options="option.value as option.name group by option.group for option in aderCroups"></select>',
                     replace: true,
                     //scope: true,
                     controller: ["$scope", "$element", "$attrs", "$timeout", function($scope, $element, $attrs, $timeout){
                         $scope.$timeout = $timeout;
                     }],
                     link: function($scope, $element, $attrs, $timeout){
-                        $scope.aderGroupPromise.then(function(){
-                            $scope.$timeout(function(){
-                                $element.chosen({
-                                    width: '100%',
-                                    allow_single_deselect: true,
-                                    search_contains : true,
-                                    disable_search_threshold: 10,
-                                    no_results_text: "没有找到任何结果!"
-                                });
-                            }, 10);
-
-                        });
-
-                        $scope.$watch('order.advertiser', function(){
-                            //if($scope.order)
-                            //$element.trigger("chosen:updated");
-                        });
+                        if($attrs.isrender){
+                            $scope.aderGroupPromise.then(function(){
+                                $scope.$timeout(function(){
+                                    $scope.renderChosenServer($element);
+                                }, 10);
+                            });
+                        } else {
+                            $scope.$watch('order.advertiser', function(){
+                                if($element.data('chosen')){
+                                    $element.trigger("chosen:updated");
+                                } else {
+                                    $scope.renderChosenServer($element);
+                                }
+                            });
+                        }
                     }
                 }
             });

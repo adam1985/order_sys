@@ -685,7 +685,7 @@
 			if(msg==undef){return;}
 			
 			//tipSweep为true，且当前不是处于错误状态时，blur事件不触发信息显示;
-            console.log(o.obj && !o.obj.is(".Validform_error"));
+
 			if(triggered=="bycheck" && o.sweep && (o.obj && !o.obj.is(".Validform_error") || typeof type == "function")){return;}
 
 			$.extend(o,{curform:this});

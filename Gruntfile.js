@@ -55,9 +55,14 @@ module.exports = function (grunt) {
                 files: {
                     '<%= yeoman.tmp %>/styles/layout.css' : [
                         '<%= yeoman.app %>/styles/bootstrap.css',
-                        '<%= yeoman.app %>/styles/bootstrap-theme.css',
+                        '<%= yeoman.app %>/styles/roboto.css',
+                        '<%= yeoman.app %>/styles/material-fullpalette.css',
+                        '<%= yeoman.app %>/styles/ripples.css',
+                        '<%= yeoman.app %>/styles/angular-material.css',
                         '<%= yeoman.app %>/styles/datepicker.css',
-                        '<%= yeoman.app %>/styles/zTreeStyle.css',
+                        '<%= yeoman.app %>/styles/validform_v5.3.2.css',
+                        '<%= yeoman.app %>/styles/chosen.css',
+                        '<%= yeoman.app %>/styles/loading-bar.css',
                         '<%= yeoman.app %>/styles/layout.css'
                     ]
                 }
@@ -88,7 +93,7 @@ module.exports = function (grunt) {
                 files: [{
                     expand: true,
                     cwd: '<%= yeoman.distmp %>',
-                    src: ['{,*/}*.html'],
+                    src: [  '{,*/}*.html','tpl/{,*/}*.html'],
                     dest: '<%= yeoman.dist %>'
                 }]
             }
@@ -104,11 +109,19 @@ module.exports = function (grunt) {
                         "angular": "angular/angular",
                         'angular-route': 'angular/angular-route',
                         "angular-ui-router": "angular/angular-ui-router",
+                        "angular-animate": "angular/angular-animate",
+                        "angular-aria": "angular/angular-aria",
+                        "angular-resource": "angular/angular-resource",
+                        "angular-material": "angular/angular-material",
+                        "loading-bar": "angular/loading-bar",
+                        "restangular": "angular/restangular",
+                        "bootstrap-material": "bootstrap-material-design/material",
+                        "bootstrap-ripples": "bootstrap-material-design/ripples",
                         "ztree": "component/jquery.ztree.all-3.5",
                         "ext": "ext/ext-all",
                         'ext-locale': 'ext/ext-locale-zh_CN',
                         "My97DatePicker" : "component/My97DatePicker/WdatePicker",
-                        "chosen" : "component/chosen/chosen.jquery",
+                        "chosen" : "component/jquery.chosen",
                         "validform" : "component/validform/js/Validform_v5.3.2",
                         "datatables" : "component/datatables",
                         "amcharts" : "component/amcharts/amcharts",
@@ -120,9 +133,21 @@ module.exports = function (grunt) {
                             "deps": ["jquery"],
                             "exports": 'angular'
                         },
+                        "angular-animate": ["angular"],
+                        "angular-aria": ["angular"],
+                        "restangular": ["angular"],
+                        "angular-resource": ["angular"],
+                        "loading-bar":["angular"],
+                        "angular-material":  {
+                            "deps": ["angular", "angular-animate", "angular-aria", "loading-bar"],
+                            "exports": 'angular'
+                        },
+
                         "bootstrap": ["jquery"],
                         "angular-route": ["angular"],
                         "angular-ui-router": ["angular"],
+                        "bootstrap-material": ["bootstrap"],
+                        "bootstrap-ripples": ["bootstrap"],
                         'ext-locale':['ext'],
                         "chosen" : ["jquery"],
                         "validform" : ["jquery"],
@@ -141,9 +166,19 @@ module.exports = function (grunt) {
 
         concat: {
             requirejs: {
-                src: ['<%= yeoman.app %>/scripts/require.min.js', '<%= yeoman.tmp %>/scripts/index.js'],
+                src: ['<%= yeoman.app %>/scripts/require.js', '<%= yeoman.tmp %>/scripts/index.js'],
                 dest: '<%= yeoman.tmp %>/scripts/index.js'
             }
+        },
+
+        uglify: {
+             dist: {
+                 files: {
+                     '<%= yeoman.tmp %>/scripts/index.js': [
+                         '<%= yeoman.tmp %>/scripts/index.js'
+                     ]
+                 }
+             }
         },
 
         // Copies remaining files to places other tasks can use
@@ -163,7 +198,8 @@ module.exports = function (grunt) {
                     cwd: '<%= yeoman.app %>',
                     dest: '<%= yeoman.distmp %>',
                     src: [
-                        '{,*/}*.html'
+                        '{,*/}*.html',
+                        'tpl/{,*/}*.html'
                     ]
                 }]
             },
@@ -226,7 +262,7 @@ module.exports = function (grunt) {
                     '<%= yeoman.distmp %>/scripts'
                 ],
                 patterns: {
-                    js: [[/(images\/[\w-]+\.png)/g, 'replace image in js']]
+                    js: [[/(images\/[\w-]+\.(?:png|gif|jpg|jpeg))/g, 'replace image in js']]
                 }
 
             },
@@ -244,6 +280,7 @@ module.exports = function (grunt) {
         'cssmin',
         'requirejs',
         'concat',
+        'uglify',
         'imagemin',
         'copy:dist',
         'copy:html',

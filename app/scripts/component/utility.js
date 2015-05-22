@@ -16,11 +16,13 @@ define(['jquery', './template', 'interface/ajax', 'validform'], function ($, tem
             this.cb = config.cb || $.noop;
             this.options = config.options || {};
             var buttons = [
-                    { type : 'ok', class: 'btn btn-primary', btnClass: 'btn-ok', text : '确定' },
+                    { type : 'ok', class: 'btn btn-material-blue', btnClass: 'btn-ok', text : '确定' },
                     { type : 'cancel', class: 'btn', text : '取消' }
             ];
 
-            this.buttons = this.disposeButtons(buttons, config.buttons);
+            this.buttons = buttons;
+
+            this.disposeButtons(buttons.concat(), config.buttons);
 
             this.jqModal = this.createModal();
             this.addEvent();
@@ -78,7 +80,7 @@ define(['jquery', './template', 'interface/ajax', 'validform'], function ($, tem
             modal : this.data
         }), modalJq;
         if(this.scope){
-            modalJq = this.scope.compile(modalTpl)(this.scope)
+            modalJq = this.scope.compile(modalTpl)(this.scope.$rootScope)
         } else {
             modalJq = $(modalTpl);
         }
@@ -118,20 +120,24 @@ define(['jquery', './template', 'interface/ajax', 'validform'], function ($, tem
             self = this,
             cb = $.noop;
 
+        btn.off('click');
         btn.on('click', function(){
             var index = parseInt($(this).attr('data-index'));
             if( self.buttons[index].type == 'ok'){
-                cb = self.buttons[index].cb || self.cb;
+                cb = self.buttons[index].cb || self.cb || cb;
+            } else {
+                cb = self.buttons[index].cb || self.cancelCb || cb;
             }
 
-
-            if(  !cb(self, self.jqModal) ){
-                self.hide();
+            if( !cb.keeplive ){
+                self.hide(function(){
+                    cb(self, self.jqModal);
+                });
+            } else {
+                cb(self, self.jqModal);
             }
-            
-            
+
         });
-
 
         return this;
     };
@@ -141,17 +147,19 @@ define(['jquery', './template', 'interface/ajax', 'validform'], function ($, tem
         var self = this,
             jqModal = self.jqModal,
             dialogJq,
-            modalTpl = template.render( 'modal-content-template', {
-                modal : this.data
+            data = $.extend(this.data, config.data || {});
+            this.disposeButtons(this.buttons.concat(), config.buttons);
+            var modalTpl = template.render( 'modal-content-template', {
+                modal : data
             });
             self.cb = config.cb || $.noop;
-            self.data = config.data || {};
-            this.buttons = this.disposeButtons(this.buttons, config.buttons);
+
             if(this.scope){
-                dialogJq = this.scope.compile(modalTpl)(this.scope)
+                dialogJq = this.scope.compile(modalTpl)(this.scope.$rootScope);
             } else {
                 dialogJq = $(modalTpl);
             }
+
             jqModal.find('.modal-dialog').html(dialogJq);
             this.addEvent();
             self.show();

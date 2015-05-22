@@ -3,9 +3,10 @@ define(['jquery', "angular-material", "directive/mainDirective", "service/mainSe
         'ui.router',
         'webapp.service',
         'webapp.directive',
-        'webapp.controller'
+        'webapp.controller',
+        'chieffancypants.loadingBar'
     ])
-    .config(function($httpProvider){
+    .config(["$httpProvider", function($httpProvider){
             // 头部配置
             $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
             $httpProvider.defaults.headers.post['Accept'] = 'application/json, text/javascript, */*; q=0.01';
@@ -15,7 +16,10 @@ define(['jquery', "angular-material", "directive/mainDirective", "service/mainSe
                 return isObj ? $.param(data) : data;
             };
 
-    })
+    }])
+    .config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+            cfpLoadingBarProvider.includeSpinner = false;
+    }])
     .controller("orderManage", ["$scope","$templateCache", function($scope, $templateCache){
             $templateCache.removeAll();
     }])

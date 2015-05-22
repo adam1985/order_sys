@@ -10,6 +10,7 @@ require.config({
         "angular-aria": "angular/angular-aria",
         "angular-resource": "angular/angular-resource",
         "angular-material": "angular/angular-material",
+        "loading-bar": "angular/loading-bar",
         "restangular": "angular/restangular",
         "bootstrap-material": "bootstrap-material-design/material",
         "bootstrap-ripples": "bootstrap-material-design/ripples",
@@ -33,8 +34,9 @@ require.config({
         "angular-aria": ["angular"],
         "restangular": ["angular"],
         "angular-resource": ["angular"],
+        "loading-bar":["angular"],
         "angular-material":  {
-            "deps": ["angular", "angular-animate", "angular-aria"],
+            "deps": ["angular", "angular-animate", "angular-aria", "loading-bar"],
             "exports": 'angular'
         },
 

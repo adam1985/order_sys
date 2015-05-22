@@ -1,40 +1,41 @@
 define(["./controllerMod"], function (controllerMod) {
     return controllerMod
-        .controller("viewCtrl", ["$scope",function($scope){
+        .controller("rootViewCtrl", ["$scope",function($scope){
 
         }])
 
-        .controller("orderOperateCtrl", ["$scope", "$rootScope", "$q", "orderResource", "aderGroupResource", "renderChosenServer", function($scope, $rootScope, $q, orderResource, aderGroupResource, renderChosenServer){
+        .controller("orderOperateCtrl", ["$scope", "$rootScope", "$http", "$q", "orderResource", "aderGroupResource", "renderChosenServer", function($scope, $rootScope, $http, $q, orderResource, aderGroupResource){
 
-            $scope.renderChosenServer = renderChosenServer;
-
+            //分页条数
             $scope.rows = 5;
 
-            $scope.orderAction = {
+            $rootScope.orderAction = {
                 isCreate: false
             };
 
             $scope.status = [
                 {
-                    id: 1,
+                    id: 0,
                     name: "未投放"
                 },
                 {
-                    id: 2,
+                    id: -1,
                     name: "已投放"
                 },
                 {
-                    id: 3,
+                    id: 1,
                     name: "暂停"
                 },
                 {
-                    id: 4,
+                    id: 2,
                     name: "停止"
                 }
             ];
 
             $scope.order_filter = {};
+            $scope.order_extra = {};
 
+            // 订单查询
             $scope.searchOrder = function(){
                 var order_filter = angular.copy($scope.order_filter),
                     advertiser = order_filter.advertiser,
@@ -55,35 +56,34 @@ define(["./controllerMod"], function (controllerMod) {
                     order_filter.order_status = statusTems.join(',');
                 }
 
-                $scope.allOrder(angular.extend(order_filter, {page: 1, rows: $scope.rows}));
+                $scope.order_extra = angular.copy(order_filter);
+
+                return $scope.allOrder(angular.extend(order_filter, {page: 1, rows: $scope.rows}));
             };
 
-            $scope.changeStatus = function(id){
 
-            };
-
-
-            $scope.allOrder = function( data ){
-                return orderResource.readAll(data, function(res){
+            // 订单列表
+            $scope.allOrder = function( data, extra ){
+                return orderResource.readAll($.extend(data,extra || {}), function(res){
                     if(res.success){
                         var data = res.data,
                             page = +data.page,
                             total = +data.totle,
                             totalPages = Math.ceil( total / $scope.rows );
-
-                        $scope.order_list = data.rows;
-                        $scope.totalPages = totalPages;
-                        $scope.page = page;
+                            $scope.order_list = data.rows;
+                            $scope.totalPages = totalPages;
+                            $scope.page = page;
                     }
                 }).$promise;
             };
 
+            // 新建订单
             $scope.createOrder = function(){
                 var defer = $q.defer(), p = defer.promise;
-                orderResource.create($scope.order, function(res){
+                orderResource.create($rootScope.order, function(res){
 
                     if(res.success){
-                        $scope.order = null;
+                        $rootScope.order = {};
                         defer.resolve();
                     } else {
                         $scope.errMsg = res.msg;
@@ -95,18 +95,16 @@ define(["./controllerMod"], function (controllerMod) {
                 return p;
             };
 
+            // 读取单条订单
             $scope.readOrder = function(id){
                 var defer = $q.defer(), p = defer.promise;
-                $scope.orderAction.isCreate = false;
+                $rootScope.orderAction.isCreate = false;
                 orderResource.read({id: id}, function(res){
                     if(res.success){
                         var data = res.data;
-
-                        $scope.order = data;
-                        $scope.order.hidden_end_date = data.end_date;
-
+                        $rootScope.order = data;
+                        $rootScope.order.hidden_end_date = data.end_date;
                         defer.resolve();
-
                     } else {
                         defer.reject();
                     }
@@ -115,19 +113,21 @@ define(["./controllerMod"], function (controllerMod) {
                 return p;
             };
 
+            // 清空订单
             $scope.emptyOrder = function(){
                 var defer = $q.defer(), p = defer.promise;
-                $scope.order = {};
-                $scope.orderAction.isCreate = true;
+                $rootScope.order = {};
+                $rootScope.orderAction.isCreate = true;
                 defer.resolve();
                 return p;
             };
 
+            // 更新订单
             $scope.updateOrder = function(){
                 var defer = $q.defer(), p = defer.promise;
-                orderResource.update($scope.order, function(res){
+                orderResource.update($rootScope.order, function(res){
                     if(res.success){
-                        $scope.order = null;
+                        $rootScope.order = {};
                         defer.resolve();
                     } else {
                         $scope.errMsg = res.msg;
@@ -139,11 +139,44 @@ define(["./controllerMod"], function (controllerMod) {
                 return p;
             };
 
+            // 移除订单
+            $scope.removeOrder = function(id){
+                var defer = $q.defer(), p = defer.promise;
+                orderResource.delete({id: id}, function(res){
+                    if(res.success){
+                        defer.resolve();
+                    } else {
+
+                        $scope.errMsg = res.msg;
+                        defer.reject();
+                    }
+                });
+
+                return p;
+            };
+
+
+            // 读取广告列表
+            $scope.readAd = function(id){
+                var defer = $q.defer(), p = defer.promise;
+                orderResource.readAd({order_id: id}, function(res){
+                    if(res.success){
+                        defer.resolve(res.data);
+                    } else {
+                        defer.reject();
+                    }
+                });
+
+                return p;
+            };
+
+            // 加载订单列表
             $scope.orderResourcePromise = $scope.allOrder({
                 page: 1,
                 rows: $scope.rows
             });
 
+            // 加载广告主
             $scope.aderGroupPromise = aderGroupResource.get(function(res){
                 if(res.success){
                     var data = res.data, aders = [];
@@ -158,7 +191,7 @@ define(["./controllerMod"], function (controllerMod) {
                             });
                         }
                     });
-                    $scope.aderCroups = aders;
+                    $rootScope.aderCroups = aders;
                 }
             }).$promise;
 

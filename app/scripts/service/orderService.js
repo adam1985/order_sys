@@ -10,7 +10,8 @@ define(["./serviceMod"], function (serviceMod) {
                     url: '/order/add'
                 },
                 update: {method: 'POST', url: '/order/add'},
-                delete: {method: 'GET'}
+                delete: {method: 'GET', url: '/order/delorder'},
+                readAd: {method: 'GET', url: '/order/getcategorylist'}
             });
 
         }])

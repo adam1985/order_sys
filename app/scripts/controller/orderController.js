@@ -4,15 +4,17 @@ define(["./controllerMod"], function (controllerMod) {
 
         }])
 
-        .controller("orderOperateCtrl", ["$scope", "$rootScope", "$http", "$q", "orderResource", "aderGroupResource", "renderChosenServer", function($scope, $rootScope, $http, $q, orderResource, aderGroupResource){
+        .controller("orderOperateCtrl", ["$scope", "$rootScope", "$http", "$q", "orderResource", "aderGroupResource", "renderChosenServer",
+            function($scope, $rootScope, $http, $q, orderResource, aderGroupResource){
 
-            //分页条数
+            // 分页条数
             $scope.rows = 5;
 
             $rootScope.orderAction = {
                 isCreate: false
             };
 
+            // 订单状态
             $scope.status = [
                 {
                     id: 0,

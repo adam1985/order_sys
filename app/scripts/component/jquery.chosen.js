@@ -300,6 +300,7 @@
             if (this.results_showing) {
                 return this.winnow_results();
             }
+
         };
 
         AbstractChosen.prototype.reset_single_select_options = function() {
@@ -327,6 +328,10 @@
 
         AbstractChosen.prototype.results_search = function(evt) {
             if (this.results_showing) {
+                var ignoreOpt = $('.ignore-option');
+                if(ignoreOpt.is(':visible')){
+                    ignoreOpt.hide()
+                }
                 return this.winnow_results();
             } else {
                 return this.results_show();
@@ -603,10 +608,18 @@
                 container_props.id = this.form_field.id.replace(/[^\w]/g, '_') + "_chosen";
             }
             this.container = $("<div />", container_props);
+            var ignoreOption = $(this.form_field).attr('ignore-option'),
+            ignoreOpt = '';
+            if(ignoreOption){
+             ignoreOpt = '<div class="ignore-option">' + ignoreOption + '</div>';
+            }
+            var chosenDrop =  ignoreOpt + '<ul class="chosen-results"></ul>';
+
+
             if (this.is_multiple) {
-                this.container.html('<ul class="chosen-choices"><li class="search-field"><input type="text" value="' + this.default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chosen-drop"><ul class="chosen-results"></ul></div>');
+                this.container.html('<ul class="chosen-choices"><li class="search-field"><input type="text" value="' + this.default_text + '" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chosen-drop">' + chosenDrop + '</div>');
             } else {
-                this.container.html('<a class="chosen-single chosen-default" tabindex="-1"><span>' + this.default_text + '</span><div><b></b></div></a><div class="chosen-drop"><div class="chosen-search"><input type="text" autocomplete="off" /></div><ul class="chosen-results"></ul></div>');
+                this.container.html('<a class="chosen-single chosen-default" tabindex="-1"><span>' + this.default_text + '</span><div><b></b></div></a><div class="chosen-drop"><div class="chosen-search"><input type="text" autocomplete="off" /></div>' + chosenDrop + '</div>');
             }
             this.form_field_jq.hide().after(this.container);
             this.dropdown = this.container.find('div.chosen-drop').first();
@@ -870,6 +883,10 @@
         };
 
         Chosen.prototype.results_show = function() {
+            var ignoreOpt = $('.ignore-option');
+            if(ignoreOpt.is(':hidden')){
+                ignoreOpt.show()
+            }
             if (this.is_multiple && this.max_selected_options <= this.choices_count()) {
                 this.form_field_jq.trigger("chosen:maxselected", {
                     chosen: this

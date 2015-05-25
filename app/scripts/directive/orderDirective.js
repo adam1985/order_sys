@@ -243,7 +243,7 @@ define(["./directiveMod", "component/template", "component/utility", "chosen", "
                     scope: true,
                     link: function($scope, $element, $attrs){
                         $scope.orderResourcePromise.then(function(res){
-                            if( $scope.order_list.length && $scope.totalPages > 1 ) {
+                            if( $scope.order_list && $scope.order_list.length && $scope.totalPages > 1 ) {
                                 $element.bootstrapPaginator({
                                     bootstrapMajorVersion: 3,
                                     alignment: 'center',
@@ -290,12 +290,14 @@ define(["./directiveMod", "component/template", "component/utility", "chosen", "
                     template: '<select class="hide" ng-options="option.value as option.name group by option.group for option in aderCroups"></select>',
                     replace: true,
                     scope: true,
+                    //transclude: true,
                     controller: ["$scope", "$element", "$attrs", "$timeout", "renderChosenServer", function($scope, $element, $attrs, $timeout, renderChosenServer){
                         $scope.$timeout = $timeout;
                         $scope.renderChosenServer = renderChosenServer;
                     }],
                     link: function($scope, $element, $attrs){
                         if($attrs.isrender){
+                            //$element.attr('ignore-option', "广告主一共有" + $scope.$rootScope.aderCroups.length + "个");
                             $scope.aderGroupPromise.then(function(){
                                 $scope.$timeout(function(){
                                     $scope.renderChosenServer($element);

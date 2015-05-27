@@ -103,9 +103,7 @@ define(["./controllerMod"], function (controllerMod) {
                 $rootScope.orderAction.isCreate = false;
                 orderResource.read({id: id}, function(res){
                     if(res.success){
-                        var data = res.data;
-                        $rootScope.order = data;
-                        $rootScope.order.hidden_end_date = data.end_date;
+                        $rootScope.order = res.data;
                         defer.resolve();
                     } else {
                         defer.reject();

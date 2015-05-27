@@ -3,7 +3,7 @@ define(["./serviceMod", "jquery", "chosen"], function (serviceMod, $) {
         factory("renderChosenServer", [function(){
             return  function($element){
                 $element.chosen({
-                    width: '99%',
+                    width: '100%',
                     allow_single_deselect: true,
                     search_contains : true,
                     disable_search_threshold: 10,

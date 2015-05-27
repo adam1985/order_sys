@@ -151,7 +151,7 @@ define(["./directiveMod", "component/template", "component/utility", "chosen", "
                                 if(key == 'web'){
                                     item.url = '/web/?original_order_id=' + val.order_id;
                                 } else {
-                                    item.url = '/ad/search?original_order_id=' + val.order_id + '&original_ad_id_type=' + val.original_ad_id_type;
+                                    item.url = '/ad/search?original_order_id=' + val.order_id;
                                 }
                                 angular.extend(item, val);
                                 arr.push(item);

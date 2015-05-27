@@ -83,12 +83,9 @@
                 <div class="row">
                     <div class="col-sm-4">
                         <div class="form-group form-group-black">
-                            <label class="col-sm-4 control-label">广告主</label>
-
+                            <label for="order-filter-number" class="col-sm-4 control-label">工单号</label>
                             <div class="col-sm-8">
-                                <ader-group ignore-option="广告主一共有<span>{{aderCroups.length}}</span>个" isrender="1" multiple="multiple" data-placeholder="点击选择广告主" ng-model="order_filter.advertiser">
-
-                                </ader-group>
+                                <input placeholder="输入工单号" type="text" class="form-control" id="order-filter-number" ng-model="order_filter.number">
                             </div>
                         </div>
                     </div>
@@ -105,6 +102,19 @@
                                      </md-checkbox>
 
                                 </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group form-group-black">
+                            <label class="col-sm-4 control-label">广告主</label>
+
+                            <div class="col-sm-8">
+                                <ader-group ignore-option="广告主一共有<span>{{aderCroups.length}}</span>个" isrender="1" multiple="multiple" data-placeholder="点击选择广告主" ng-model="order_filter.advertiser">
+
+                                </ader-group>
                             </div>
                         </div>
                     </div>
@@ -130,6 +140,7 @@
                             <th>订单名称</th>
                             <th>广告主</th>
                             <th>执行AE</th>
+                            <th>工单号</th>
                             <th>开始日期</th>
                             <th>结束日期</th>
                             <th>订单状态</th>
@@ -142,6 +153,7 @@
                             <td>{{item.order_name}}</td>
                             <td>{{item.advertiser}}</td>
                             <td>{{item.execute_ae}}</td>
+                            <td>{{item.number}}</td>
                             <td>{{item.start_date}}</td>
                             <td>{{item.end_date}}</td>
                             <td>{{item.order_status}}</td>
@@ -169,8 +181,7 @@
                                     </tr>
 
                                     </thead>
-                                    <tbody ng-repeat="ad in item.ad_list">
-                                        <tr>
+                                        <tr ng-repeat="ad in item.ad_list">
                                             <td>{{ad.posi}}</td>
                                             <td>{{ad.adcount}}</td>
                                             <td>{{ad.start_time}}</td>
@@ -180,11 +191,15 @@
                                             <td>{{ad.current_progress}}</td>
                                             <td>{{ad.yesterday_progress}}</td>
                                             <td>{{ad.total_progress}}</td>
-                                            <td>
+
+                                            <td rowspan="4" ng-if="$first">
+                                                <a target="_blank" href="{{ad.url}}" class="btn btn-material-blue btn-sm">添加/查看</a>
+                                            </td>
+
+                                            <td ng-if="$last">
                                                 <a target="_blank" href="{{ad.url}}" class="btn btn-material-blue btn-sm">添加/查看</a>
                                             </td>
                                         </tr>
-                                    </tbody>
                                 </table>
                             </td>
                         </tr>
@@ -210,7 +225,6 @@
                         </div>
                     </div>
                 </div>
-                <input  ng-disabled="orderAction.isCreate" readonly="" type="hidden" ng-model="order.hidden_end_date" />
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group form-group-black">
@@ -224,10 +238,10 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group form-group-black">
-                            <label for="order-crm" class="col-sm-4 control-label">CRM订单<em class="required">*</em></label>
+                            <label for="order-crm" class="col-sm-4 control-label">CRM订单</label>
 
                             <div class="col-sm-8">
-                                <input datatype="*" nullmsg="请输入必填项" placeholder="输入CRM订单号" type="text" class="form-control" id="order-crm"
+                                <input placeholder="输入CRM订单号" type="text" class="form-control" id="order-crm"
                                        ng-model="order.crm_order_id">
                             </div>
                         </div>
@@ -242,6 +256,20 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group form-group-black">
+                            <label for="order-number" class="col-sm-4 control-label">工单号<em class="required">*</em></label>
+                            <div class="col-sm-8">
+                                <input datatype="*" nullmsg="请输入必填项" placeholder="输入工单号" type="text" class="form-control" id="order-number" ng-model="order.number">
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group form-group-black">
                             <label class="col-sm-4 control-label">广告主<em class="required">*</em></label>
@@ -252,36 +280,8 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="form-group form-group-black">
-                            <label for="order-start-date" class="col-sm-4 control-label">订单开始日期<em class="required">*</em></label>
 
-                            <div class="col-sm-8">
-                                <div class="input-group">
-                                    <input  datatype="*" nullmsg="请输入必填项" readonly="" placeholder="输入订单结束日期" data-date-picker type="text"
-                                            class="form-control" id="order-start-date" ng-model="order.start_date"/>
-                                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group form-group-black">
-                            <label for="order-end-date" class="col-sm-4 control-label">订单结束日期<em class="required">*</em></label>
-
-                            <div class="col-sm-8">
-                                <div class="input-group">
-                                    <input datatype="*" nullmsg="请输入必填项" readonly="" placeholder="输入订单结束日期" data-date-picker type="text"
-                                           class="form-control" id="order-end-date" ng-model="order.end_date"/>
-                                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </fieldset>
         </form>
     </script>

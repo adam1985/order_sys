@@ -8,7 +8,7 @@ define(["./controllerMod"], function (controllerMod) {
             function($scope, $rootScope, $http, $q, orderResource, aderGroupResource){
 
             // 分页条数
-            $scope.rows = 5;
+            $scope.rows = 15;
 
             $rootScope.orderAction = {
                 isCreate: false
@@ -99,9 +99,10 @@ define(["./controllerMod"], function (controllerMod) {
 
             // 读取单条订单
             $scope.readOrder = function(id){
+
                 var defer = $q.defer(), p = defer.promise;
                 $rootScope.orderAction.isCreate = false;
-                orderResource.read({id: id}, function(res){
+                orderResource.read({order_id: id}, function(res){
                     if(res.success){
                         $rootScope.order = res.data;
                         defer.resolve();
@@ -142,7 +143,7 @@ define(["./controllerMod"], function (controllerMod) {
             // 移除订单
             $scope.removeOrder = function(id){
                 var defer = $q.defer(), p = defer.promise;
-                orderResource.delete({id: id}, function(res){
+                orderResource.delete({order_id: id}, function(res){
                     if(res.success){
                         defer.resolve();
                     } else {
@@ -175,6 +176,35 @@ define(["./controllerMod"], function (controllerMod) {
                 page: 1,
                 rows: $scope.rows
             });
+
+            // 加载广告主
+            /*$scope.aderGroupPromise = aderGroupResource.get(function(res){
+                if(res.success){
+                    var data = res.data, aderCroups = [], aderByCroups = [];
+                    $.each(data, function(key, val){
+                        var group = [];
+                        group.push(key);
+                        if(angular.isArray(val)){
+                            var options = [];
+                            $.each(val, function(i, name){
+                                aderCroups.push({
+                                    name: name,
+                                    value: name
+                                });
+                                options.push({
+                                    name: name,
+                                    value: name,
+                                    group: key
+                                });
+                            });
+                            group.push(options);
+                        }
+                        aderByCroups.push(group);
+                    });
+                    $rootScope.aderCroups = aderCroups;
+                    $rootScope.aderByCroups = aderByCroups;
+                }
+            }).$promise;*/
 
             // 加载广告主
             $scope.aderGroupPromise = aderGroupResource.get(function(res){

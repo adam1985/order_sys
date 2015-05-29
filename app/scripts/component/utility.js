@@ -20,9 +20,9 @@ define(['jquery', './template', 'interface/ajax', 'validform'], function ($, tem
                     { type : 'cancel', class: 'btn', text : '取消' }
             ];
 
-            this.buttons = buttons;
+            this.buttons = $.extend(true, [], buttons);
 
-            this.disposeButtons(buttons.concat(), config.buttons);
+            this.disposeButtons(buttons, config.buttons);
 
             this.jqModal = this.createModal();
             this.addEvent();
@@ -117,16 +117,16 @@ define(['jquery', './template', 'interface/ajax', 'validform'], function ($, tem
 
     modal.prototype.addEvent = function(){
         var btn = this.jqModal.find('.modal-btn'),
-            self = this,
-            cb = $.noop;
+            self = this;
 
         btn.off('click');
         btn.on('click', function(){
-            var index = parseInt($(this).attr('data-index'));
+            var index = parseInt($(this).attr('data-index')),
+                cb = $.noop;
             if( self.buttons[index].type == 'ok'){
-                cb = self.buttons[index].cb || self.cb || cb;
+                cb = self.buttons[index].cb || self.cb || $.noop;
             } else {
-                cb = self.buttons[index].cb || self.cancelCb || cb;
+                cb = self.buttons[index].cb || self.cancelCb || $.noop;
             }
 
             if( !cb.keeplive ){
@@ -148,11 +148,11 @@ define(['jquery', './template', 'interface/ajax', 'validform'], function ($, tem
             jqModal = self.jqModal,
             dialogJq,
             data = $.extend(this.data, config.data || {});
-            this.disposeButtons(this.buttons.concat(), config.buttons);
+            self.cb = config.cb || $.noop;
+            this.disposeButtons(this.buttons, config.buttons);
             var modalTpl = template.render( 'modal-content-template', {
                 modal : data
             });
-            self.cb = config.cb || $.noop;
 
             if(this.scope){
                 dialogJq = this.scope.compile(modalTpl)(this.scope.$rootScope);
@@ -207,7 +207,6 @@ define(['jquery', './template', 'interface/ajax', 'validform'], function ($, tem
                     }
                 },
                 label: config.label,
-                datatype: {},
                 beforeSubmit: function( form ) {
                     if( config.type == 'ajax'){
                         config.cb( form );
@@ -228,6 +227,25 @@ define(['jquery', './template', 'interface/ajax', 'validform'], function ($, tem
                     objtip.show().text(msg);
                 } else {
                     objtip.hide();
+                }
+            },
+            ignoreHidden: false,
+            datatype: {
+                ordername: function(gets){
+                    var maxLength = 100;
+                    if( !gets ){
+                        return "请输入必填项";
+                    } else  if( gets.replace(/[^\x00-\xff]/g,"00").length > maxLength ) {
+                        return "订单名称不能超过100个字符";
+                    } else {
+                        return true;
+                    }
+                },
+                ader: function(gets){
+                    if(!gets || /^\?/.test(gets)){
+                        return "请输入必填项";
+                    }
+                    return true;
                 }
             }
         }).check(false);

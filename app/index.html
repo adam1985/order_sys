@@ -23,7 +23,7 @@
     </div>
 </div>
 <script type="text/html" id="modal-template">
-    <div class="modal fade bs-example-modal-lg" id="<#=modal.id#>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade bs-example-modal-lg" <#== modal.id == 'alert-model' ? 'style="z-index: 9999"' : '' #> id="<#=modal.id#>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog <#= modal.cls || ''#>">
             <# include('modal-content-template') #>
         </div>

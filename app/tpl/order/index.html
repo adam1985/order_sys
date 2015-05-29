@@ -19,7 +19,6 @@
                     <div class="col-sm-4">
                         <div class="form-group form-group-black">
                             <label for="order-filter-crm" class="col-sm-4 control-label">CRM订单号</label>
-
                             <div class="col-sm-8">
                                 <input placeholder="输入CRM订单号" type="text" class="form-control" id="order-filter-crm"
                                        ng-model="order_filter.crm_order_id">
@@ -49,8 +48,8 @@
                             <label for="order-filter-orderid" class="col-sm-4 control-label">订单编号</label>
 
                             <div class="col-sm-8">
-                                <input placeholder="请输入编号" type="text" class="form-control" id="order-filter-orderid"
-                                       ng-model="order_filter.id"/>
+                                <input placeholder="请输入订单编号" type="text" class="form-control" id="order-filter-orderid"
+                                       ng-model="order_filter.order_id"/>
                             </div>
                         </div>
                     </div>
@@ -112,7 +111,7 @@
                             <label class="col-sm-4 control-label">广告主</label>
 
                             <div class="col-sm-8">
-                                <ader-group ignore-option="广告主一共有<span>{{aderCroups.length}}</span>个" isrender="1" multiple="multiple" data-placeholder="点击选择广告主" ng-model="order_filter.advertiser">
+                                <ader-group class="hide" ng-options="option.value as option.name group by option.group for option in aderCroups" ignore-option="广告主一共有<span>{{aderCroups.length}}</span>个" isrender="1" multiple="multiple" insert="before" data-placeholder="点击选择广告主" ng-model="order_filter.advertiser">
 
                                 </ader-group>
                             </div>
@@ -137,34 +136,34 @@
                         <thead>
                         <tr>
                             <th>订单id</th>
+                            <th>工单号</th>
                             <th>订单名称</th>
                             <th>广告主</th>
                             <th>执行AE</th>
-                            <th>工单号</th>
                             <th>开始日期</th>
                             <th>结束日期</th>
                             <th>订单状态</th>
                             <th>操作</th>
                         </tr>
                         </thead>
-                        <tbody ng-repeat="item in order_list">
+                        <tbody class="order-list-tbody" ng-repeat="item in order_list">
                         <tr>
-                            <td>{{item.id}}</td>
-                            <td>{{item.order_name}}</td>
-                            <td>{{item.advertiser}}</td>
-                            <td>{{item.execute_ae}}</td>
+                            <td>{{item.order_id}}</td>
                             <td>{{item.number}}</td>
+                            <td class="wrap" width="300">{{item.order_name}}</td>
+                            <td class="wrap" width="300">{{item.advertiser}}</td>
+                            <td class="wrap" width="300">{{item.execute_ae}}</td>
                             <td>{{item.start_date}}</td>
                             <td>{{item.end_date}}</td>
                             <td>{{item.order_status}}</td>
-                            <td>
-                              <expand-ad class="btn btn-material-blue btn-sm" orderid="{{item.id}}">{{item.expandAdStatus ? "收起" : "展开"}}</expand-ad>&nbsp;
-                              <new-order class="btn btn-material-blue btn-sm" orderid="{{item.id}}">编辑</new-order>&nbsp;
-                              <del-order  orderid="{{item.id}}" class="btn btn-material-blue btn-sm">删除</del-order>
+                            <td width="300">
+                              <expand-ad class="btn btn-material-blue btn-sm" orderid="{{item.order_id}}">{{item.expandAdStatus ? "收起" : "展开"}}</expand-ad>&nbsp;
+                              <new-order class="btn btn-material-blue btn-sm" orderid="{{item.order_id}}">编辑</new-order>&nbsp;
+                              <del-order  orderid="{{item.order_id}}" class="btn btn-material-blue btn-sm">删除</del-order>
                             </td>
                         </tr>
                         <tr ng-show="item.expandAdStatus">
-                            <td colspan="8">
+                            <td colspan="9">
                                 <table class="table table-striped table-bordered table-hover">
                                     <thead>
                                     <tr>
@@ -220,7 +219,7 @@
                         <div class="form-group form-group-black">
                             <label for="order-id" class="col-sm-4 control-label">订单id</label>
                             <div class="col-sm-8">
-                                <input ng-disabled="orderAction.isCreate" readonly="" placeholder="系统自动生成" type="text" class="form-control" id="order-id" ng-model="order.id">
+                                <input ng-disabled="orderAction.isCreate" readonly="" placeholder="系统自动生成" type="text" class="form-control" id="order-id" ng-model="order.order_id">
                             </div>
                         </div>
                     </div>
@@ -231,7 +230,7 @@
                             <label for="order-name" class="col-sm-4 control-label">订单名称<em class="required">*</em></label>
 
                             <div class="col-sm-8">
-                                <input datatype="*" nullmsg="请输入必填项" placeholder="请输入订单名称" type="text" class="form-control" id="order-name"
+                                <input datatype="ordername" placeholder="请输入订单名称" type="text" class="form-control" id="order-name"
                                        ng-model="order.order_name">
                             </div>
                         </div>
@@ -265,25 +264,24 @@
                             </div>
                         </div>
                     </div>
-
-
                 </div>
-
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group form-group-black">
                             <label class="col-sm-4 control-label">广告主<em class="required">*</em></label>
-
                             <div class="col-sm-8">
-                                <ader-group id="order-ader" data-placeholder="点击选择广告主" ng-model="order.advertiser">
+                                <ader-group class="ader-groups" datatype="ader" id="order-ader" data-placeholder="点击选择广告主" ng-model="order.advertiser" ng-options="option.value as option.name for option in aderCroups">
+                                    <option value=""></option>
                                 </ader-group>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </fieldset>
         </form>
     </script>
 </div>
+
+
+
 

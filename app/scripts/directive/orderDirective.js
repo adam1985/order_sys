@@ -25,10 +25,11 @@ define(["./directiveMod", "component/template", "component/utility", "chosen", "
                 return {
                     restrict: "AE",
                     //require: "^ngController",
-                    controller : ["$scope", "$element", "$attrs", "$compile", "$rootScope", "$q", function($scope, $element,$attrs, $compile, $rootScope, $q){
+                    controller : ["$scope", "$element", "$attrs", "$compile", "$rootScope", "renderChosenServer", function($scope, $element,$attrs, $compile, $rootScope, renderChosenServer){
 
                         $scope.compile = $compile;
                         $scope.$rootScope = $rootScope;
+                        $scope.renderChosenServer = renderChosenServer;
                         //$scope.$q = $q;
                         $scope.modalCof = {
                             id : 'global-modal',
@@ -48,34 +49,46 @@ define(["./directiveMod", "component/template", "component/utility", "chosen", "
                             var orderid = $attrs.orderid, readDefer;
 
                             var modalComplete = function(modal, jqModal){
-                                var isCheckValid = utility.isCheckValid($('#newOrderForm'));
+                                var isCheckValid = utility.isCheckValid('#newOrderForm');
 
                                 if(isCheckValid){
                                     var promise;
-                                    if($scope.$rootScope.orderAction.isCreate){
-                                        promise = $scope.createOrder();
-                                    } else {
-                                        promise = $scope.updateOrder();
-                                    }
 
-                                    modal.hide();
+                                    utility.modal( 'modal-template', {
+                                        data : {
+                                            id : 'alert-model',
+                                            title : '提示',
+                                            body : '是否确认提交'
+                                        },
+                                        cb: function(){
+                                            if($scope.$rootScope.orderAction.isCreate){
+                                                promise = $scope.createOrder();
+                                            } else {
+                                                promise = $scope.updateOrder();
+                                            }
 
-                                    promise.then(function(){
-                                        $scope.allOrder({
-                                             page: 1,
-                                             rows: $scope.rows
-                                         });
-                                    }, function(){
-                                        utility.modal( 'modal-template', {
-                                            data : {
-                                                id : 'alert-model',
-                                                title : '提示',
-                                                body : $scope.errMsg
-                                            },
-                                            buttons : [
-                                                {"ty" : "remove", "type" : "cancel"}
-                                            ]
-                                        });
+                                            modal.hide(function(){
+                                                promise.then(function(){
+                                                    $scope.allOrder({
+                                                        page: 1,
+                                                        rows: $scope.rows
+                                                    });
+                                                }, function(){
+                                                    utility.modal( 'modal-template', {
+                                                        data : {
+                                                            id : 'alert-model',
+                                                            title : '提示',
+                                                            body : $scope.errMsg
+                                                        },
+                                                        buttons : [
+                                                            {"ty" : "remove", "type" : "cancel"}
+                                                        ]
+                                                    });
+                                                });
+                                            });
+
+
+                                        }
                                     });
 
                                 } else {
@@ -85,17 +98,21 @@ define(["./directiveMod", "component/template", "component/utility", "chosen", "
 
                             modalComplete.keeplive = 1;
 
+
+
                             if(orderid){
                                 readDefer = $scope.readOrder(orderid);
                             } else {
                                 readDefer = $scope.emptyOrder();
                             }
 
-                            utility.modal( 'modal-template', {
-                                data : $scope.modalCof,
-                                cb: modalComplete
-                            }, $scope);
-
+                            readDefer.then(function(){
+                                $scope.$rootScope.orderAction.isCreate ? $scope.modalCof.title = "新建订单" : $scope.modalCof.title = "编辑订单";
+                                utility.modal( 'modal-template', {
+                                    data : $scope.modalCof,
+                                    cb: modalComplete
+                                }, $scope);
+                            })
                         });
 
                     }
@@ -242,7 +259,7 @@ define(["./directiveMod", "component/template", "component/utility", "chosen", "
                     replace: true,
                     scope: true,
                     link: function($scope, $element, $attrs){
-                        $scope.orderResourcePromise.then(function(res){
+                        $scope.$watch(function(){
                             if( $scope.order_list && $scope.order_list.length && $scope.totalPages > 1 ) {
                                 $element.bootstrapPaginator({
                                     bootstrapMajorVersion: 3,
@@ -278,6 +295,9 @@ define(["./directiveMod", "component/template", "component/utility", "chosen", "
                                 $element.empty();
                             }
                         });
+                        $scope.orderResourcePromise.then(function(res){
+
+                        });
 
                     }
                 }
@@ -287,30 +307,35 @@ define(["./directiveMod", "component/template", "component/utility", "chosen", "
             directive("aderGroup", function(){
                 return {
                     restrict: "AE",
-                    template: '<select class="hide" ng-options="option.value as option.name group by option.group for option in aderCroups"></select>',
+                    template: '<select ng-transclude></select>',
                     replace: true,
                     scope: true,
-                    //transclude: true,
+                    transclude: true,
                     controller: ["$scope", "$element", "$attrs", "$timeout", "renderChosenServer", function($scope, $element, $attrs, $timeout, renderChosenServer){
                         $scope.$timeout = $timeout;
                         $scope.renderChosenServer = renderChosenServer;
                     }],
                     link: function($scope, $element, $attrs){
+                        $element.empty();
                         if($attrs.isrender){
-                            //$element.attr('ignore-option', "广告主一共有" + $scope.$rootScope.aderCroups.length + "个");
                             $scope.aderGroupPromise.then(function(){
                                 $scope.$timeout(function(){
                                     $scope.renderChosenServer($element);
                                 }, 10);
                             });
                         } else {
-                            $scope.$watch('order.advertiser', function(){
+                            var firstOpt = $element.find('option:eq(0)');
+                            if(firstOpt.val() == '?'){
+                                firstOpt.val('');
+                            }
+                            $scope.$timeout(function(){
                                 if($element.data('chosen')){
                                     $element.trigger("chosen:updated");
                                 } else {
                                     $scope.renderChosenServer($element);
                                 }
-                            });
+                            }, 10);
+
                         }
                     }
                 }

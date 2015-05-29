@@ -24,3 +24,6 @@ em.required{color: #f00; vertical-align: middle; margin-left: 2px;}
 .chosen-container-active .chosen-choices{box-shadow: none;}
 .ignore-option{ padding: 3px 5px 0; font-weight: bold;}
 .ignore-option span{ color: #f00; }
+
+table th, .order-list-tbody td{word-break: keep-all; white-space: nowrap;}
+.order-list-tbody td.wrap{word-break: break-all;white-space:normal;word-wrap:break-word;}

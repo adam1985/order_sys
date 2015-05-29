@@ -746,9 +746,11 @@
 			var inputval=Validform.util.getValue.call(curform,$(this));
 			
 			//隐藏或绑定dataIgnore的表单对象不做验证;
+
 			if(settings.ignoreHidden && $(this).is(":hidden") || $(this).data("dataIgnore")==="dataIgnore"){
 				return true;
 			}
+
 			
 			//dragonfly=true时，没有绑定ignore，值为空不做验证，但验证不通过;
 			if(settings.dragonfly && !$(this).data("cked") && Validform.util.isEmpty.call($(this),inputval) && $(this).attr("ignore")!="ignore"){

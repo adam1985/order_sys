@@ -29,7 +29,7 @@ define(['jquery', './template', 'interface/ajax', 'validform'], function ($, tem
     };
 
     modal.prototype.disposeButtons = function(def, butsConf) {
-        def = def || [];
+        def = $.extend(true, [], def);
         butsConf = butsConf || [];
         var defClass = {
                 "ok" : "btn btn-primary",
@@ -39,6 +39,8 @@ define(['jquery', './template', 'interface/ajax', 'validform'], function ($, tem
             "ok" : "确定",
             "cancel" : "取消"
         };
+
+
 
         $.each( butsConf, function(i, v) {
             var ty = v.ty;
